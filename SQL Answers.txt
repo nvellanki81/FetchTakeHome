@@ -1,0 +1,80 @@
+Question 1
+----------
+Select Count(Distinct A.ReceiptID),A.BrandCode  
+From [dbo].[RECEIPTS] R
+Join dbo.Attributes A ON A.ReceiptID = R.ReceiptID
+Where PurchasedDate >= '01/01/2021' And 
+PurchasedDate <= '01/31/2021'
+Group By A.BrandCode 
+Order By 1 Desc
+
+Question 2
+----------
+Select Count(Distinct A.ReceiptID),A.BrandCode  
+From [dbo].[RECEIPTS] R
+Join dbo.Attributes A ON A.ReceiptID = R.ReceiptID
+Where PurchasedDate >= '02/01/2021' And 
+PurchasedDate <= '02/28/2021'
+Group By A.BrandCode 
+Order By 1 Desc
+
+--The data is not recent so had to use hardcoded dates. If the data was recent we could use the below
+
+With Months AS
+(
+	SELECT FORMAT(DATEADD(MONTH, DATEDIFF(MONTH, -1, GETDATE()) - 1, 0),'d','us') PreviousMonth,
+	FORMAT(GETDATE()-1,'d','us') AS CurrentMonth
+) 
+
+Select Count(Distinct A.ReceiptID),A.BrandCode  
+From [dbo].[RECEIPTS] R
+Join dbo.Attributes A ON A.ReceiptID = R.ReceiptID
+Where PurchasedDate >= (Select PreviousMonth From Months) And 
+PurchasedDate <= (Select CurrentMonth From Months)
+Group By A.BrandCode 
+Order By 1 Desc
+
+
+Question 3
+----------
+Select AVG(Spent) As Average, RewardsReceiptStatus 
+From [dbo].[RECEIPTS]
+Where RewardsReceiptStatus IN ('Finished','Rejected')
+Group By RewardsReceiptStatus
+
+Question 4
+----------
+Select Count(RewardsReceiptStatus) As Status, RewardsReceiptStatus 
+From [dbo].[RECEIPTS]
+Where RewardsReceiptStatus IN ('Finished','Rejected')
+Group By RewardsReceiptStatus
+
+Question 5
+----------
+Select Sum(Spent) As TotalSpent,BrandCode 
+From [dbo].[RECEIPTS]
+Where UserID IN (Select Distinct UserID From [dbo].[USERS] Where DATEDIFF(MM, CreatedDate, GETDATE()) > 6)
+Group By BrandCode
+Order By 1 Desc
+
+Question 6
+----------
+Select Count(*) As TotalTransactions,BrandCode 
+From [dbo].[RECEIPTS]
+Where UserID IN (Select Distinct UserID From [dbo].[USERS] Where DATEDIFF(MM, CreatedDate, GETDATE()) > 6)
+Group By BrandCode
+Order By 1 Desc
+
+Data Quality Checks
+--------------------
+Select Count(*) As Null_BrandCode 
+From [dbo].[RECEIPTS]
+Where BrandCode IS NULL
+
+
+Select Count(*) As Null_BrandCode 
+From [dbo].[BRANDS]
+Where Brand_Code IS NULL
+
+Select Distinct Category,Category_Code,Brand_Code 
+From dbo.BRANDS
