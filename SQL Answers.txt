@@ -3,8 +3,8 @@ Question 1
 Select Count(Distinct A.ReceiptID),A.BrandCode  
 From [dbo].[RECEIPTS] R
 Join dbo.Attributes A ON A.ReceiptID = R.ReceiptID
-Where PurchasedDate >= '01/01/2021' And 
-PurchasedDate <= '01/31/2021'
+Where PurchasedDate >= '02/01/2021' And 
+PurchasedDate <= '02/28/2021'
 Group By A.BrandCode 
 Order By 1 Desc
 
@@ -13,8 +13,8 @@ Question 2
 Select Count(Distinct A.ReceiptID),A.BrandCode  
 From [dbo].[RECEIPTS] R
 Join dbo.Attributes A ON A.ReceiptID = R.ReceiptID
-Where PurchasedDate >= '02/01/2021' And 
-PurchasedDate <= '02/28/2021'
+Where PurchasedDate >= '01/01/2021' And 
+PurchasedDate <= '01/31/2021'
 Group By A.BrandCode 
 Order By 1 Desc
 
