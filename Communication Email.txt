@@ -1,0 +1,23 @@
+Hi,
+I am working on the Receipts, Users and Brand data that was provided to me for loading into our data warehouse. 
+I have a few questions about the data.
+
+In the Users table I see that for some of the UserID the Last Login is NULL. If they haven't logged in since the user was 
+created we might have to move them to an archive table to save on space and cost.
+
+I see a lot of NULL values in the Receipts and Brands data that was provided. I was wondering if we can put in place 
+some data governance practices so we can have good data which can make your job easier when making decisions.
+
+When I was querying the data I found that lot of barcodes were missing and also the Brand Code and Category codes are entered 
+as text (ex: KRAFT, HUGGIES, BABY etc). I would recommend these values to be integers because even a small mistake when entering 
+the text values might give entirely different numbers when you join on these codes.
+
+Since this is JSON data, it takes a few extra steps to flatten the data to different rows and load it to a relational DW. If we 
+can move this to a non-relational databases that can handle semi-structured data like JSON it would speed up the process as the 
+data grows. Other options would be moving to clould based technologies.
+
+If you have any questions regarding my findings please let me know and I will be happy to answer.
+
+Thanks
+Naveen
+
